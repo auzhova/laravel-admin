@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\AdminController;
@@ -88,6 +89,17 @@ class PostController extends AdminController
         $form->text('anons', __('Anons'))->required()->help('help...');
         $form->textarea('content', __('Content'))->required();
         $form->switch('publish', __('Publish'));
+
+        // Subtable fields
+        $allComments = Comment::select('id','text')->get()->mapWithKeys(function ($item) {
+            return [$item['id'] => $item['text']];
+        });
+        $form->hasMany('comments', function (Form\NestedForm $form) use($adminUsers, $allComments) {
+            $form->select('user_id', __('User'))->options($adminUsers);
+            $form->select('parent_id', __('Parent comment'))->options($allComments);
+            $form->text('text', __('Text'));
+            $form->switch('status', __('Status'));
+        });
 
         return $form;
     }

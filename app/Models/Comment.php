@@ -63,4 +63,13 @@ class Comment extends Model
     {
         return $this->belongsTo(Administrator::class,'user_id','id');
     }
+
+    /**
+     * Связь с моделью Comment
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function parent()
+    {
+        return $this->hasOne(Comment::class,'id','parent_id');
+    }
 }

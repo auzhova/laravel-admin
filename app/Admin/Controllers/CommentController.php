@@ -33,7 +33,8 @@ class CommentController extends AdminController
         $grid->column('user.name', __('User'));
         //$grid->column('post_id', __('Post id'));
         $grid->column('post.title', __('Post'));
-        $grid->column('parent_id', __('Parent id'));
+//        $grid->column('parent_id', __('Parent id'));
+        $grid->column('parent.text', __('Parent comment'));
         $grid->column('text', __('Text'));
         $grid->column('status', __('Status'));
         $grid->column('created_at', __('Created at'));
@@ -57,7 +58,8 @@ class CommentController extends AdminController
         $show->field('user.name', __('User'));
 //        $show->field('post_id', __('Post id'));
         $show->field('post.title', __('Post'));
-        $show->field('parent_id', __('Parent id'));
+//        $show->field('parent_id', __('Parent id'));
+        $show->column('parent.text', __('Parent comment'));
         $show->field('text', __('Text'));
         $show->field('status', __('Status'));
         $show->field('created_at', __('Created at'));
