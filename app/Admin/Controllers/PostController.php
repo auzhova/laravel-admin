@@ -111,8 +111,18 @@ class PostController extends AdminController
         });
 
         $form->saved(function (Form $form) {
-            if($this->files && $this->files != $form->model()->files){
-                $form->model()->update(['files' => array_merge($this->files, $form->model()->files)]);
+            if ($this->files && $this->files != $form->model()->files) {
+                $newFiles = $form->model()->files;
+                if (isset($this->files['doc1']) && !isset($form->model()->files['doc1'])) {
+                    $newFiles['doc1'] = $this->files['doc1'];
+                } elseif (isset($form->model()->files['doc1'])) {
+                    $newFiles['doc1'] = $form->model()->files['doc1'];
+                } elseif (isset($this->files['doc2']) && !isset($form->model()->files['doc2'])) {
+                    $newFiles['doc2'] = $this->files['doc2'];
+                }elseif (!isset($form->model()->files['doc2'])) {
+                    $newFiles['doc2'] = $form->model()->files['doc2'];
+                }
+                $form->model()->update(['files' => $newFiles]);
             }
         });
 
