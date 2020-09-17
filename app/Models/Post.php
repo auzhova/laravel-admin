@@ -5,6 +5,7 @@ namespace App\Models;
 use App\User;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 /**
  * App\Models\Post
@@ -47,6 +48,10 @@ class Post extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    protected $casts = [
+        'files' =>'array',
+    ];
 
     /**
      * Связь с моделью User

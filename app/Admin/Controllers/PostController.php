@@ -19,6 +19,8 @@ class PostController extends AdminController
      */
     protected $title = 'Post';
 
+    private $files = null;
+
     /**
      * Make a grid builder.
      *
@@ -90,6 +92,9 @@ class PostController extends AdminController
         $form->textarea('content', __('Content'))->required();
         $form->switch('publish', __('Publish'));
 
+        $form->file('files->doc1', 'Документ 1')->removable()->hidePreview();
+        $form->file('files->doc2', 'Документ 2')->removable()->hidePreview();
+
         // Subtable fields
         $allComments = Comment::select('id','text')->get()->mapWithKeys(function ($item) {
             return [$item['id'] => $item['text']];
@@ -99,6 +104,16 @@ class PostController extends AdminController
             $form->select('parent_id', __('Parent comment'))->options($allComments);
             $form->text('text', __('Text'));
             $form->switch('status', __('Status'));
+        });
+
+        $form->saving(function (Form $form) {
+            $this->files = $form->model()->files;
+        });
+
+        $form->saved(function (Form $form) {
+            if($this->files && $this->files != $form->model()->files){
+                $form->model()->update(['files' => array_merge($this->files, $form->model()->files)]);
+            }
         });
 
         return $form;
