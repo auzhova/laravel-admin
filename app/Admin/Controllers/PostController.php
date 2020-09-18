@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\AdminForm;
 use App\Models\Comment;
 use App\Models\Post;
 use Encore\Admin\Auth\Database\Administrator;
@@ -80,7 +81,7 @@ class PostController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Post());
+        $form = new AdminForm(new Post());
 
         //$form->number('author_id', __('Author Id'));
         $adminUsers = Administrator::select('id','name')->get()->mapWithKeys(function ($item) {
@@ -105,25 +106,6 @@ class PostController extends AdminController
             $form->text('text', __('Text'));
             $form->switch('status', __('Status'));
         });
-
-        /*
-        $form->saved(function (Form $form) {
-            dd('saved',$form, $form->getLayout());
-            if ($this->files && $this->files != $form->model()->files) {
-                $newFiles = $form->model()->files;
-                if (isset($this->files['doc1']) && !isset($form->model()->files['doc1'])) {
-                    $newFiles['doc1'] = $this->files['doc1'];
-                } elseif (isset($form->model()->files['doc1'])) {
-                    $newFiles['doc1'] = $form->model()->files['doc1'];
-                } elseif (isset($this->files['doc2']) && !isset($form->model()->files['doc2'])) {
-                    $newFiles['doc2'] = $this->files['doc2'];
-                }elseif (!isset($form->model()->files['doc2'])) {
-                    $newFiles['doc2'] = $form->model()->files['doc2'];
-                }
-                $form->model()->update(['files' => $newFiles]);
-            }
-        });
-        */
 
         return $form;
     }

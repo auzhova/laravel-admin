@@ -52,11 +52,12 @@ class Post extends Model
     protected $casts = [
         'files' =>'json',
     ];
-
+/*
     private $files = [
         'doc1',
         'doc2'
     ];
+*/
 
     /**
      * Связь с моделью User
@@ -75,6 +76,7 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class,'post_id','id');
     }
+    /*
 
     public function getFilesAttribute($value)
     {
@@ -94,4 +96,5 @@ class Post extends Model
         }
         $this->attributes['files'] = json_encode($files);
     }
+    */
 }
