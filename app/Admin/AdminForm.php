@@ -72,7 +72,6 @@ class AdminForm extends Form
                     } else {
                         Arr::set($prepared, $array[0], $oldValues);
                     }
-                    $this->model()->update([$columns => $value]);
                 } else {
                     Arr::set($prepared, $columns, $value);
                 }
