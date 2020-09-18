@@ -50,7 +50,12 @@ class Post extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'files' =>'array',
+        'files' =>'json',
+    ];
+
+    private $files = [
+        'doc1',
+        'doc2'
     ];
 
     /**
@@ -69,5 +74,24 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class,'post_id','id');
+    }
+
+    public function getFilesAttribute($value)
+    {
+        return json_decode($value, true);
+    }
+
+    public function setFilesAttribute($value)
+    {
+        $files = null;
+        $originalValue = $this->getOriginal()['files'];
+        foreach ($this->files as $file) {
+            if (isset($value[$file])) {
+                $files[$file] = $value[$file];
+            } elseif (isset($originalValue[$file])) {
+                $files[$file] = $originalValue[$file];
+            }
+        }
+        $this->attributes['files'] = json_encode($files);
     }
 }

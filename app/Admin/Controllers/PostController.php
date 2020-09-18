@@ -106,11 +106,9 @@ class PostController extends AdminController
             $form->switch('status', __('Status'));
         });
 
-        $form->saving(function (Form $form) {
-            $this->files = $form->model()->files;
-        });
-
+        /*
         $form->saved(function (Form $form) {
+            dd('saved',$form, $form->getLayout());
             if ($this->files && $this->files != $form->model()->files) {
                 $newFiles = $form->model()->files;
                 if (isset($this->files['doc1']) && !isset($form->model()->files['doc1'])) {
@@ -125,6 +123,7 @@ class PostController extends AdminController
                 $form->model()->update(['files' => $newFiles]);
             }
         });
+        */
 
         return $form;
     }
