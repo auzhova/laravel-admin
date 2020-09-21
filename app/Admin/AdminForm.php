@@ -81,4 +81,60 @@ class AdminForm extends Form
 
         return $prepared;
     }
+
+    /**
+     * Prepare input data for insert.
+     *
+     * @param $inserts
+     *
+     * @return array
+     */
+    protected function prepareInsert($inserts): array
+    {
+        if ($this->isHasOneRelation($inserts)) {
+            $inserts = Arr::dot($inserts);
+        }
+
+        foreach ($inserts as $column => $value) {
+            if (($field = $this->getFieldByColumn($column)) === null) {
+                unset($inserts[$column]);
+                continue;
+            }
+
+            $inserts[$column] = $field->prepare($value);
+        }
+dd($inserts);
+        $prepared = [];
+
+        foreach ($inserts as $key => $value) {
+            Arr::set($prepared, $key, $value);
+        }
+
+        return $prepared;
+    }
+
+    /**
+     * Find field object by column.
+     *
+     * @param $column
+     *
+     * @return mixed
+     */
+    protected function getFieldByColumn($column)
+    {
+        return $this->fields()->first(
+            function (Field $field) use ($column) {
+                if (strripos( $field->column(), '.' )) {
+                    $array = explode('.' , $field->column());
+                    dump($array,$field->column(),$column,$array[0],$column,$array[0] == $column);
+                    return $array[0] == $column;
+                }
+                if (is_array($field->column())) {
+                    return in_array($column, $field->column());
+                }
+
+                return $field->column() == $column;
+            }
+        );
+    }
 }

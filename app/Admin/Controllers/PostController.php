@@ -87,10 +87,10 @@ class PostController extends AdminController
         $adminUsers = Administrator::select('id','name')->get()->mapWithKeys(function ($item) {
             return [$item['id'] => $item['name']];
         });
-        $form->select('author_id', __('Author'))->options($adminUsers)->required();
-        $form->text('title', __('Title'))->required();
-        $form->text('anons', __('Anons'))->required()->help('help...');
-        $form->textarea('content', __('Content'))->required();
+        $form->select('author_id', __('Author'))->options($adminUsers);//->required();
+        $form->text('title', __('Title'));//->required();
+        $form->text('anons', __('Anons'));//->required()->help('help...');
+        $form->textarea('content', __('Content'));//->required();
         $form->switch('publish', __('Publish'));
 
         $form->file('files->doc1', 'Документ 1')->removable()->hidePreview();
