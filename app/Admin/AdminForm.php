@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Spatie\EloquentSortable\Sortable;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -101,9 +102,15 @@ class AdminForm extends Form
                 continue;
             }
 
-            $inserts[$column] = $field->prepare($value);
+            if(is_array($value)){
+                $key = key($value);
+                $value = $inserts[$column][$key];
+                $inserts[$column][$key] = $field->prepare($value);
+            }else{
+                $inserts[$column] = $field->prepare($value);
+            }
         }
-dd($inserts);
+
         $prepared = [];
 
         foreach ($inserts as $key => $value) {
@@ -124,9 +131,8 @@ dd($inserts);
     {
         return $this->fields()->first(
             function (Field $field) use ($column) {
-                if (strripos( $field->column(), '.' )) {
+                if (Str::contains($field->column(), '.')) {
                     $array = explode('.' , $field->column());
-                    dump($array,$field->column(),$column,$array[0],$column,$array[0] == $column);
                     return $array[0] == $column;
                 }
                 if (is_array($field->column())) {
