@@ -37,8 +37,6 @@ class CommentController extends AdminController
         $grid->column('parent.text', __('Parent comment'));
         $grid->column('text', __('Text'));
         $grid->column('status', __('Status'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }
